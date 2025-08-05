@@ -17,32 +17,51 @@ Exports:
 - Utilities: Helper functions like `chunk_urls` for processing data.
 """
 
-from .http_client import APCloudyClient
-from .config import config
+# Import main client and managers
+from .client import APCloudyClient
+from .jobs_manager import JobsManager
+from .spiders_manager import SpidersManager
+from .project_manager import ProjectManager
+
+# Import models
 from .models import Job, JobState, Spider, Project
+
+# Import exceptions
 from .exceptions import (
-    APCloudyException, APIError, AuthenticationError, JobNotFoundError,
-    ProjectNotFoundError, SpiderNotFoundError, RateLimitError
+    APIError,
+    AuthenticationError,
+    JobNotFoundError,
+    ProjectNotFoundError,
+    SpiderNotFoundError,
+    RateLimitError
 )
-from .utils import chunk_urls
+
+# Import config
+from .config import config
 
 __version__ = "0.1.0"
-__author__ = "Fawad Ali"
-__email__ = "fawadstar6@gmail.com"
 
 __all__ = [
-    "APCloudyClient",
-    "config",
-    "Job",
-    "JobState",
-    "Spider",
-    "Project",
-    "APCloudyException",
-    "APIError",
-    "AuthenticationError",
-    "JobNotFoundError",
-    "ProjectNotFoundError",
-    "SpiderNotFoundError",
-    "RateLimitError",
-    "chunk_urls"
+    # Main client and managers
+    'APCloudyClient',
+    'JobsManager',
+    'SpidersManager',
+    'ProjectManager',
+
+    # Models
+    'Job',
+    'JobState',
+    'Spider',
+    'Project',
+
+    # Exceptions
+    'APIError',
+    'AuthenticationError',
+    'JobNotFoundError',
+    'ProjectNotFoundError',
+    'SpiderNotFoundError',
+    'RateLimitError',
+
+    # Config
+    'config'
 ]

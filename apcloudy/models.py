@@ -141,13 +141,12 @@ class Job:
                 job.finished_at.strftime("%Y-%m-%d %H:%M:%S") if job.finished_at else "N/A",
                 job.items_scraped,
                 job.requests_made,
-                job.job_args,
                 job.units,
-                f"{job.duration:.2f}s" if job.duration else "N/A"
+                f"{job.duration:.2f}s" if job.duration else "N/A",
             ])
 
         # Display job data in table format with columns
-        headers = ["Job ID", "Spider Name", "State", "Project ID", "Created At", "Started At", "Finished At", "Items", "Requests", "Args", "Units", "Duration"]
+        headers = ["Job ID", "Spider Name", "State", "Project ID", "Created At", "Started At", "Finished At", "Items", "Requests", "Units", "Duration"]
 
         print("JOB DETAILS")
         print(tabulate(row_data, headers=headers, tablefmt="grid"))
@@ -176,11 +175,6 @@ class Job:
             return datetime.fromisoformat(dt_str.replace('Z', '+00:00'))
         except (ValueError, AttributeError):
             return None
-
-    @property
-    def is_finished(self) -> bool:
-        """Check if job is finished (success or failed)"""
-        return self.state in (JobState.COMPLETED, JobState.DELETED)
 
     @property
     def duration(self) -> Optional[float]:

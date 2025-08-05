@@ -20,18 +20,12 @@ class Config:
         # Job settings
         self.default_units = 2
         self.default_priority = 0
-        self.default_poll_interval = 30
-        self.default_job_timeout = 3600
 
         # HTTP settings
         self.request_timeout = 30
         self.max_retries = 3
         self.retry_delay = 1
         self.backoff_factor = 2
-
-        # Rate limiting
-        self.rate_limit_delay = 60
-        self.max_rate_limit_retries = 3
 
         # Logging
         self.log_level = "INFO"

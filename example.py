@@ -40,7 +40,6 @@ def get_sitemap_urls():
 
 
 # Initialize APCloudy client - now automatically uses config.base_url
-print(f"Connecting to: {config.base_url}")
 client = APCloudyClient(PROJECT_API)
 
 # Test connection
@@ -50,10 +49,10 @@ client = APCloudyClient(PROJECT_API)
 #     print("❌ Failed to connect to APCloudy")
 
 project = client.get_project(PROJECT_ID)
-sp = project.jobs.list(state=JobState.COMPLETED)
+sp = client.create_project('kkkfdsf')
 # print(sp)
-#
-# for i in range(10):
+
+# for i in range(2):
 #     project.jobs.run('Rs_Spider',
 #                      job_args={'sitemap_urls': f'https://example.com{i}'})
 
