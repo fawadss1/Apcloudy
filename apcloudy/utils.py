@@ -1,4 +1,10 @@
-"""Utility functions for APCloudy"""
+"""
+A collection of utility functions for handling chunking, batching,
+and configuration validation processes.
+
+This module provides tools to split lists or URLs into smaller chunks,
+validate configurations, and construct API URLs effectively.
+"""
 
 from typing import List, TypeVar, Iterator
 import math

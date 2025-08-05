@@ -1,4 +1,19 @@
-"""Data models for APCloudy"""
+"""
+This module defines classes and functionalities to handle scraping jobs,
+spiders, and projects. It includes data representations for job execution
+states, jobs, spiders, and projects.
+
+The module provides detailed representations and helper methods to create
+instances of these classes from dictionaries, typically corresponding to API
+responses. It also includes properties and static methods to parse and format
+relevant data.
+
+Classes:
+  - JobState: Enum for job execution states.
+  - Job: Represents a scraping job, its attributes, and utility methods.
+  - Spider: Represents a spider and its configurations.
+  - Project: Represents a project and associated metadata.
+"""
 
 from dataclasses import dataclass, field
 from typing import Dict, List, Optional, Any
@@ -19,7 +34,43 @@ class JobState(Enum):
 
 @dataclass
 class Job:
-    """Represents a scraping job"""
+    """
+    Represents a job execution and maintains information related to job lifecycle,
+    metrics, and associated resources.
+
+    This class is used for tracking the progress, state, and details of a specific
+    job. It can manage metadata such as creation time, start time, finish time, and
+    other attributes that describe the job's execution process.
+
+    :ivar job_id: Unique identifier for the job assigned by the system.
+    :type job_id: str
+    :ivar spider_name: Name of the spider used to execute the job.
+    :type spider_name: str
+    :ivar state: Current state of the job, represented as a JobState instance.
+    :type state: JobState
+    :ivar project_id: Identifier of the project the job belongs to.
+    :type project_id: str
+    :ivar created_at: Timestamp when the job was created, or None if not available.
+    :type created_at: Optional[datetime]
+    :ivar started_at: Timestamp when the job was started, or None if not available.
+    :type started_at: Optional[datetime]
+    :ivar finished_at: Timestamp when the job was finished, or None if not available.
+    :type finished_at: Optional[datetime]
+    :ivar items_scraped: Total number of items successfully scraped by the job.
+    :type items_scraped: int
+    :ivar requests_made: Total number of requests made during the job execution.
+    :type requests_made: int
+    :ivar job_args: Dictionary of additional arguments or configuration parameters
+        passed to the job.
+    :type job_args: Dict[str, Any]
+    :ivar units: Number of resource units used (e.g., processing capacity) by
+        the job.
+    :type units: int
+    :ivar logs_url: URL containing logs associated with the job, or None if not set.
+    :type logs_url: Optional[str]
+    :ivar items_url: URL containing scraped items for the job, or None if not set.
+    :type items_url: Optional[str]
+    """
     job_id: str
     spider_name: str
     state: JobState
@@ -36,7 +87,19 @@ class Job:
 
     @classmethod
     def from_dict(cls, data: Dict[str, Any]) -> 'Job':
-        """Create Job instance from API response"""
+        """
+        Creates a Job instance from a dictionary representation and displays the job details
+        in a tabulated format.
+
+        This method is primarily responsible for deserializing structured data into a Job
+        instance and setting attributes accordingly. Additionally, it formats and prints
+        job details like job ID, spider name, state, and timestamps in an organized layout.
+
+        :param data: Dictionary containing the job data.
+        :type data: Dict[str, Any]
+        :return: A Job instance populated from the given data.
+        :rtype: Job
+        """
         config.current_job_id = data['job_id']
 
         # Create the Job instance
@@ -72,17 +135,27 @@ class Job:
             f"{job.duration:.2f}s" if job.duration else "N/A"
         ]
 
-        print("\n" + "="*120)
         print("JOB DETAILS")
-        print("="*120)
         print(tabulate([row_data], headers=headers, tablefmt="grid"))
-        print("="*120 + "\n")
-
         return job
 
     @staticmethod
     def _parse_datetime(dt_str: Optional[str]) -> Optional[datetime]:
-        """Parse datetime string from API"""
+        """
+        Parses an ISO 8601 formatted date-time string into a ``datetime`` object.
+
+        This static method attempts to parse the given date-time string. It handles
+        ISO 8601 formats and ensures compatibility with UTC by replacing any 'Z'
+        suffix in the string with '+00:00'. If the string is invalid or cannot be
+        processed, the method returns ``None``.
+
+        :param dt_str: The date-time string to be parsed. If provided, it must follow
+            the ISO 8601 format. If ``None`` or empty, the method returns ``None``.
+        :type dt_str: Optional[str]
+        :return: A ``datetime`` object representing the parsed date-time, or ``None``
+            if the input is invalid, empty, or cannot be processed.
+        :rtype: Optional[datetime]
+        """
         if not dt_str:
             return None
         try:
@@ -107,7 +180,7 @@ class Job:
 class Spider:
     """Represents a spider"""
     name: str
-    version: str = "1.0.0"
+    version: str = "0.1.0"
     description: str = ""
     project_id: str = ""
     settings: Dict[str, Any] = field(default_factory=dict)

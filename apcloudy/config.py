@@ -1,5 +1,10 @@
 """
-Configuration settings for APCloudy client.
+Configuration settings for the APCloudy client.
+
+This module provides a `Config` class that encapsulates all the configuration
+settings required for interacting with the APCloudy client. These settings
+include API-related configurations, job-specific defaults, HTTP connection
+options, pagination limits, file upload constraints, and logging preferences.
 """
 
 
