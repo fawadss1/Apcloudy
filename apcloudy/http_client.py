@@ -14,7 +14,7 @@ Classes:
 import requests
 import json
 import time
-from typing import Dict, List, Optional, Any, Iterator, BinaryIO
+from typing import Dict, List, Optional, Any, Iterator, BinaryIO, TYPE_CHECKING
 from urllib.parse import urljoin
 from .models import Job, JobState, Spider, Project
 from .config import config
@@ -22,6 +22,9 @@ from .exceptions import (
     APIError, AuthenticationError, JobNotFoundError,
     ProjectNotFoundError, SpiderNotFoundError, RateLimitError
 )
+
+if TYPE_CHECKING:
+    from apcloudy import Spider, Job
 
 
 class JobsManager:
@@ -41,7 +44,7 @@ class JobsManager:
         self.project_id = project_id
 
     def run(self, spider_name: str, units: Optional[int] = None, job_args: Optional[Dict[str, Any]] = None,
-            priority: Optional[int] = None, tags: Optional[List[str]] = None) -> Job:
+            priority: Optional[int] = None, tags: Optional[List[str]] = None) -> List[Job]:
         """
         Run a spider job
 
@@ -68,9 +71,9 @@ class JobsManager:
         }
 
         response = self.client.http_request('POST', 'job/run', json=data)
-        return Job.from_dict(response['job'])
+        return Job.from_dict([response['job']])
 
-    def get(self, job_id: str) -> Job:
+    def get(self, job_id: str) -> List[Job]:
         """
         Get job details
 
@@ -81,24 +84,20 @@ class JobsManager:
             Job: Job instance with current status
         """
         try:
-            response = self.client.http_request('GET', f'jobs/{job_id}')
-            return Job.from_dict(response)
+            response = self.client.http_request('GET', f'job/{self.project_id}/{job_id}')
+            return Job.from_dict(response['jobs'])
         except APIError as e:
             if e.status_code == 404:
                 raise JobNotFoundError(f"Job {job_id} not found")
             raise
 
-    def list(self, state: Optional[JobState] = None, spider: Optional[str] = None,
-             count: Optional[int] = None, offset: Optional[int] = None, tags: Optional[List[str]] = None) -> List[Job]:
+    def list(self, state: Optional[JobState] = None, spider: Optional[str] = None) -> list[Job]:
         """
         List jobs for the project
 
         Args:
             state: Filter by job state
             spider: Filter by spider name
-            count: Number of jobs to return (max 1000)
-            offset: Offset for pagination
-            tags: Filter by tags
 
         Returns:
             List[Job]: List of jobs
@@ -106,21 +105,18 @@ class JobsManager:
         # Validate configuration before using config values
         config.validate()
 
-        params = {
-            'project': self.project_id,
-            'count': min(count or config.default_page_size, config.max_page_size),
-            'offset': offset or 0
-        }
-
+        params = {}
         if state:
-            params['state'] = state.value
+            if isinstance(state, JobState):
+                params['status'] = state.value
+            else:
+                params['status'] = state
         if spider:
             params['spider'] = spider
-        if tags:
-            params['tags'] = ','.join(tags)
 
-        response = self.client.http_request('GET', 'jobs/list', params=params)
-        return [Job.from_dict(job_data) for job_data in response['jobs']]
+        response = self.client.http_request('GET', f'jobs/list/{self.project_id}', params=params)
+
+        return Job.from_dict(response['jobs'])
 
     def cancel(self, job_id: str) -> bool:
         """
@@ -250,7 +246,7 @@ class SpidersManager:
     """
     Manages spider operations within a specific project.
 
-    This class provides the functionality to list, retrieve, upload, and delete
+    This class provides the functionality to list, retrieve
     spiders associated with a project. It serves as an interface for working
     with spiders in the context of an APCloudyClient instance.
 
@@ -271,11 +267,10 @@ class SpidersManager:
         Returns:
             List[Spider]: Available spiders
         """
-        params = {'project': self.project_id}
-        response = self.client.http_request('GET', 'spiders/list', params=params)
-        return [Spider.from_dict(spider_data) for spider_data in response['spiders']]
+        response = self.client.http_request('GET', f'spiders/list/{self.project_id}')
+        return Spider.from_dict(response['spiders'])
 
-    def get(self, spider_name: str) -> Spider:
+    def get(self, spider_name: str) -> List[Spider]:
         """
         Get spider details
 
@@ -286,63 +281,12 @@ class SpidersManager:
             Spider: Spider details
         """
         try:
-            params = {'project': self.project_id}
-            response = self.client.http_request('GET', f'spiders/{spider_name}', params=params)
-            return Spider.from_dict(response)
+            response = self.client.http_request('GET', f'spider/{self.project_id}/{spider_name}')
+            return Spider.from_dict([response])
         except APIError as e:
             if e.status_code == 404:
                 raise SpiderNotFoundError(f"Spider {spider_name} not found")
             raise
-
-    def upload(self, spider_file: str, spider_name: Optional[str] = None) -> bool:
-        """
-        Upload a spider file
-
-        Args:
-            spider_file: Path to spider file
-            spider_name: Override spider name (optional)
-
-        Returns:
-            bool: True if uploaded successfully
-        """
-        with open(spider_file, 'rb') as f:
-            return self.upload_from_file(f, spider_name or spider_file)
-
-    def upload_from_file(self, file_obj: BinaryIO, spider_name: str) -> bool:
-        """
-        Upload spider from file object
-
-        Args:
-            file_obj: File-like object containing spider code
-            spider_name: Name for the spider
-
-        Returns:
-            bool: True if uploaded successfully
-        """
-        files = {'spider_file': (spider_name, file_obj, 'text/plain')}
-        data = {'project': self.project_id, 'spider_name': spider_name}
-
-        response = self.client.http_request('POST', 'spiders/upload', data=data, files=files)
-        return response.get('success', False)
-
-    def delete(self, spider_name: str) -> bool:
-        """
-        Delete a spider
-
-        Args:
-            spider_name: Name of spider to delete
-
-        Returns:
-            bool: True if deleted successfully
-        """
-        try:
-            data = {'project': self.project_id}
-            self.client.http_request('DELETE', f'spiders/{spider_name}', json=data)
-            return True
-        except APIError as e:
-            if e.status_code == 404:
-                raise SpiderNotFoundError(f"Spider {spider_name} not found")
-            return False
 
 
 class ProjectManager:

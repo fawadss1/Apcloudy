@@ -6,6 +6,7 @@ import logging
 import requests
 import xml.etree.ElementTree as ET
 from apcloudy import APCloudyClient, config
+from apcloudy.models import JobState
 from apcloudy.utils import chunk_urls
 
 # Configuration - now uses config.py defaults
@@ -48,14 +49,14 @@ client = APCloudyClient(PROJECT_API)
 # else:
 #     print("❌ Failed to connect to APCloudy")
 
-project = client.create_project('Rs_Spidert3')
-client.list()
-# print(project)
-
-# for i in range(1):
-#     print(project.jobs.run('Rs_Spider',
-#                      job_args={'sitemap_urls': f'https://example.com{i}'}))
+project = client.get_project(PROJECT_ID)
+sp = project.jobs.list(state=JobState.COMPLETED)
+# print(sp)
 #
+# for i in range(10):
+#     project.jobs.run('Rs_Spider',
+#                      job_args={'sitemap_urls': f'https://example.com{i}'})
+
 exit()
 
 # Run spiders with config-driven defaults
@@ -95,4 +96,3 @@ print(f"- Default units: {config.default_units}")
 print(f"- Request timeout: {config.request_timeout}s")
 print(f"- Max retries: {config.max_retries}")
 print(f"- Default page size: {config.default_page_size}")
-

@@ -25,7 +25,15 @@ from .config import config
 
 
 class JobState(Enum):
-    """Job execution states"""
+    """
+    Represents the state of a job in a task or workflow management system.
+
+    This enumeration is used to define and manage the state of a job. It supports
+    several states a job may transition through during its lifecycle, which can
+    facilitate job tracking, control, and monitoring in various systems. Typical
+    states include when a job is scheduled, actively running, completed, or
+    deleted.
+    """
     SCHEDULED = "scheduled"
     RUNNING = "running"
     COMPLETED = "completed"
@@ -86,7 +94,7 @@ class Job:
     items_url: Optional[str] = None
 
     @classmethod
-    def from_dict(cls, data: Dict[str, Any]) -> 'Job':
+    def from_dict(cls, data: List[Dict[str, Any]]) -> List['Job']:
         """
         Creates a Job instance from a dictionary representation and displays the job details
         in a tabulated format.
@@ -100,44 +108,50 @@ class Job:
         :return: A Job instance populated from the given data.
         :rtype: Job
         """
-        config.current_job_id = data['job_id']
+        jobs = []
+        row_data = []
+        for d in data:
+            job = cls(
+                job_id=d['job_id'],
+                spider_name=d['spider_name'],
+                state=JobState(d['status']),
+                project_id=d.get('project_id', ''),
+                created_at=cls._parse_datetime(d.get('created_at')),
+                started_at=cls._parse_datetime(d.get('started_at')),
+                finished_at=cls._parse_datetime(d.get('finished_at')),
+                items_scraped=d.get('items_scraped', 0),
+                requests_made=d.get('requests_made', 0),
+                job_args=d.get('job_args', {}),
+                units=d.get('units', 1),
+                logs_url=d.get('logs_url'),
+                items_url=d.get('items_url'),
+            )
 
-        # Create the Job instance
-        job = cls(
-            job_id=data['job_id'],
-            spider_name=data['spider_name'],
-            state=JobState(data['status']),
-            project_id=data.get('project_id', ''),
-            created_at=cls._parse_datetime(data.get('created_at')),
-            started_at=cls._parse_datetime(data.get('started_at')),
-            finished_at=cls._parse_datetime(data.get('finished_at')),
-            items_scraped=data.get('items_scraped', 0),
-            requests_made=data.get('requests_made', 0),
-            job_args=data.get('job_args', {}),
-            units=data.get('units', 1),
-            logs_url=data.get('logs_url'),
-            items_url=data.get('items_url'),
-        )
+            jobs.append(job)
+
+            config.current_job_id = d['job_id']
+
+            row_data.append([
+                job.job_id,
+                job.spider_name,
+                job.state.value,
+                job.project_id or "N/A",
+                job.created_at.strftime("%Y-%m-%d %H:%M:%S") if job.created_at else "N/A",
+                job.started_at.strftime("%Y-%m-%d %H:%M:%S") if job.started_at else "N/A",
+                job.finished_at.strftime("%Y-%m-%d %H:%M:%S") if job.finished_at else "N/A",
+                job.items_scraped,
+                job.requests_made,
+                job.job_args,
+                job.units,
+                f"{job.duration:.2f}s" if job.duration else "N/A"
+            ])
 
         # Display job data in table format with columns
-        headers = ["Job ID", "Spider Name", "State", "Project ID", "Created At", "Started At", "Finished At", "Items", "Requests", "Units", "Duration"]
-        row_data = [
-            job.job_id,
-            job.spider_name,
-            job.state.value,
-            job.project_id or "N/A",
-            job.created_at.strftime("%Y-%m-%d %H:%M:%S") if job.created_at else "N/A",
-            job.started_at.strftime("%Y-%m-%d %H:%M:%S") if job.started_at else "N/A",
-            job.finished_at.strftime("%Y-%m-%d %H:%M:%S") if job.finished_at else "N/A",
-            job.items_scraped,
-            job.requests_made,
-            job.units,
-            f"{job.duration:.2f}s" if job.duration else "N/A"
-        ]
+        headers = ["Job ID", "Spider Name", "State", "Project ID", "Created At", "Started At", "Finished At", "Items", "Requests", "Args", "Units", "Duration"]
 
         print("JOB DETAILS")
-        print(tabulate([row_data], headers=headers, tablefmt="grid"))
-        return job
+        print(tabulate(row_data, headers=headers, tablefmt="grid"))
+        return jobs
 
     @staticmethod
     def _parse_datetime(dt_str: Optional[str]) -> Optional[datetime]:
@@ -180,37 +194,31 @@ class Job:
 class Spider:
     """Represents a spider"""
     name: str
-    version: str = "0.1.0"
     description: str = ""
     project_id: str = ""
     settings: Dict[str, Any] = field(default_factory=dict)
-    tags: List[str] = field(default_factory=list)
 
     @classmethod
-    def from_dict(cls, data: Dict[str, Any]) -> 'Spider':
+    def from_dict(cls, data: List[Dict[str, Any]]) -> List['Spider']:
         """Create Spider instance from API response"""
-        spider = cls(
-            name=data['name'],
-            version=data.get('version', '1.0.0'),
-            description=data.get('description', ''),
-            project_id=data.get('project_id', ''),
-            settings=data.get('settings', {}),
-            tags=data.get('tags', [])
-        )
+        spider: List[Spider] = []
+        row_data = []
 
         # Display spider data in table format with columns
-        headers = ["Name", "Version", "Description", "Project ID", "Tags", "Settings Count"]
-        row_data = [
-            spider.name,
-            spider.version,
-            spider.description or "N/A",
-            spider.project_id or "N/A",
-            ", ".join(spider.tags) if spider.tags else "N/A",
-            len(spider.settings)
-        ]
+        headers = ["S.No", "Name", "Description", "Project ID"]
+        for idx, sp in enumerate(data, start=1):
+            row_data.append([idx,
+                             sp.get('name'),
+                             sp.get('description'),
+                             sp.get('project_id'), ])
+            spider.append(cls(
+                name=sp['name'],
+                description=sp.get('description', ''),
+                project_id=sp.get('project_id', ''),
+            ))
 
         print("SPIDER DETAILS")
-        print(tabulate([row_data], headers=headers, tablefmt="grid"))
+        print(tabulate(row_data, headers=headers, tablefmt="grid"))
         return spider
 
 

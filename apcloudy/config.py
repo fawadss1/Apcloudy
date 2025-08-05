@@ -29,17 +29,9 @@ class Config:
         self.retry_delay = 1
         self.backoff_factor = 2
 
-        # Pagination settings
-        self.default_page_size = 100
-        self.max_page_size = 1000
-
         # Rate limiting
         self.rate_limit_delay = 60
         self.max_rate_limit_retries = 3
-
-        # File upload settings
-        self.max_spider_file_size = 10 * 1024 * 1024  # 10MB
-        self.allowed_spider_extensions = ['.py', '.txt']
 
         # Logging
         self.log_level = "INFO"
@@ -58,9 +50,6 @@ class Config:
 
         if self.max_retries < 0:
             raise ValueError("Max retries cannot be negative")
-
-        if not (1 <= self.default_page_size <= self.max_page_size):
-            raise ValueError(f"Default page size must be between 1 and {self.max_page_size}")
 
         return True
 
