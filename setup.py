@@ -46,6 +46,7 @@ setup(
     python_requires='>=3.7',
     install_requires=[
         'requests>=2.32.4',
+        'tabulate>=0.9.0',
     ],
     extras_require={
         'dev': [

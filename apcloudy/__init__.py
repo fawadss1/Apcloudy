@@ -39,7 +39,10 @@ from .exceptions import (
 # Import config
 from .config import config
 
-__version__ = "0.1.0"
+# Import utilities
+from .utils import chunk_urls
+
+__version__ = "0.1.1"
 
 __all__ = [
     # Main client and managers
@@ -63,5 +66,8 @@ __all__ = [
     'RateLimitError',
 
     # Config
-    'config'
+    'config',
+
+    # Utilities
+    'chunk_urls',
 ]
