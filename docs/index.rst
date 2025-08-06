@@ -1,7 +1,7 @@
 APCloudy Documentation
 =====================
 
-Welcome to APCloudy's documentation! APCloudy is a Python client library for interacting with the APCloudy web scraping platform. This library provides a simple and intuitive interface for managing projects, spiders, and jobs on the APCloudy platform.
+Welcome to APCloudy's documentation! APCloudy is a Python client library for interacting with the APCloudy web scraping platform.
 
 .. toctree::
    :maxdepth: 2
@@ -9,12 +9,7 @@ Welcome to APCloudy's documentation! APCloudy is a Python client library for int
 
    installation
    quickstart
-   user_guide
    api_reference
-   examples
-   configuration
-   error_handling
-   changelog
 
 Features
 --------
@@ -24,7 +19,6 @@ Features
 * **Job Management**: Start, monitor, and manage scraping jobs
 * **Authentication**: Secure API key-based authentication
 * **Error Handling**: Comprehensive error handling with custom exceptions
-* **Rate Limiting**: Built-in rate limiting support
 
 Getting Started
 ---------------
