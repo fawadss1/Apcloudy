@@ -1,6 +1,17 @@
 # APCloudy
 
+[![PyPI version](https://badge.fury.io/py/apcloudy.svg)](https://badge.fury.io/py/apcloudy)
+[![Python versions](https://img.shields.io/pypi/pyversions/apcloudy.svg)](https://pypi.org/project/apcloudy/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Documentation Status](https://readthedocs.org/projects/apcloudy/badge/?version=latest)](https://apcloudy.readthedocs.io/en/latest/?badge=latest)
+[![Downloads](https://pepy.tech/badge/apcloudy)](https://pepy.tech/project/apcloudy)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+
 A Python client library for interacting with the APCloudy platform. This library provides a simple and intuitive interface for managing projects, spiders, and jobs on the APCloudy web scraping platform.
+
+## 📚 Documentation
+
+Complete documentation is available at **[apcloudy.readthedocs.io](https://apcloudy.readthedocs.io/)**
 
 ## Features
 
