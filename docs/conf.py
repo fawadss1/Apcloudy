@@ -8,6 +8,7 @@
 
 import os
 import sys
+
 sys.path.insert(0, os.path.abspath('..'))
 
 project = 'APCloudy'
@@ -37,12 +38,11 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 html_theme = 'sphinx_rtd_theme'
 html_static_path = ['_static']
 
-# RTD Theme specific options for dark mode
+# RTD Theme specific options
 html_theme_options = {
-    'analytics_id': '',  # Provided by you
+    'analytics_id': '',
     'analytics_anonymize_ip': False,
     'logo_only': False,
-    'display_version': True,
     'prev_next_buttons_location': 'bottom',
     'style_external_links': False,
     'vcs_pageview_mode': '',
@@ -53,20 +53,25 @@ html_theme_options = {
     'navigation_depth': 4,
     'includehidden': True,
     'titles_only': False,
-    # Dark mode styling
-    'body_class': 'dark-mode',
 }
 
-# Add custom CSS for dark mode
+# Add custom CSS files - this ensures they're loaded after the theme CSS
 html_css_files = [
     'css/dark_theme.css',
 ]
 
-# Custom CSS content will be created in _static/css/dark_theme.css
+
+# Ensure static files are copied
+def setup(app):
+    app.add_css_file('css/dark_theme.css')
+
+
+# Custom context for RTD
 html_context = {
-    'css_files': [
-        '_static/css/dark_theme.css',
-    ],
+    'display_github': True,
+    'github_user': 'yourusername',  # Replace with your GitHub username
+    'github_repo': 'apcloudy',  # Replace with your repo name
+    'github_version': 'main/docs/',
 }
 
 # Napoleon settings
@@ -108,5 +113,5 @@ copybutton_prompt_text = r">>> |\.\.\. |\$ |In \[\d*\]: | {2,5}\.\.\.: | {5,8}: 
 copybutton_prompt_is_regexp = True
 copybutton_only_copy_prompt_lines = True
 
-# Syntax highlighting
-pygments_style = 'github-dark'  # Dark syntax highlighting theme
+# Syntax highlighting - use a lighter dark theme for better compatibility
+pygments_style = 'monokai'
