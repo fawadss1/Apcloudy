@@ -91,23 +91,65 @@ body {
     border-top: none !important;
 }
 
-/* Main content area */
+/* Main content area - FIX WIDTH ISSUES */
 .wy-nav-content-wrap {
     background-color: var(--bg-color) !important;
+    width: 100% !important;
+    margin-left: 0 !important;
 }
 
 .wy-nav-content {
     background-color: var(--content-bg) !important;
     color: var(--text-color) !important;
+    max-width: none !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 1.618em 3.236em !important;
+}
+
+/* Ensure full width for desktop */
+@media screen and (min-width: 769px) {
+    .wy-nav-content-wrap {
+        margin-left: 300px !important;
+        width: calc(100% - 300px) !important;
+    }
+
+    .wy-nav-content {
+        width: 100% !important;
+        max-width: none !important;
+        margin: 0 !important;
+    }
+}
+
+/* Responsive layout adjustments */
+@media screen and (max-width: 768px) {
+    .wy-nav-content-wrap {
+        margin-left: 0 !important;
+        width: 100% !important;
+    }
+
+    .wy-nav-content {
+        width: 100% !important;
+        padding: 1.618em 1em !important;
+    }
 }
 
 .rst-content {
     color: var(--text-color) !important;
     background-color: transparent !important;
+    width: 100% !important;
+    max-width: none !important;
 }
 
 .document {
     background-color: var(--content-bg) !important;
+    width: 100% !important;
+}
+
+/* Section content should use full width */
+.section {
+    width: 100% !important;
+    max-width: none !important;
 }
 
 /* Headers with more specificity */
@@ -183,6 +225,7 @@ code.literal {
 table {
     border: 1px solid var(--border-color) !important;
     background-color: var(--content-bg) !important;
+    width: 100% !important;
 }
 
 .rst-content table.docutils thead,
@@ -381,23 +424,20 @@ p, span, div, li {
     color: var(--text-color) !important;
 }
 
-/* Mobile responsive adjustments */
-@media screen and (max-width: 768px) {
-    .wy-nav-side {
-        background: var(--sidebar-bg) !important;
-    }
+/* Content wrapper improvements */
+.wy-grid-for-nav {
+    background-color: var(--bg-color) !important;
+}
 
-    .wy-nav-content-wrap {
-        margin-left: 0 !important;
-        background-color: var(--bg-color) !important;
-    }
+/* Ensure proper spacing and layout */
+.rst-content .toctree-wrapper p.caption {
+    color: var(--text-color) !important;
+}
 
-    .wy-nav-top {
-        background-color: var(--header-bg) !important;
-        color: var(--text-color) !important;
-    }
-
-    .wy-nav-top a {
-        color: var(--text-color) !important;
-    }
+/* Fix any remaining width constraints */
+.rst-content .line-block,
+.rst-content .docutils,
+.rst-content .body {
+    width: 100% !important;
+    max-width: none !important;
 }
