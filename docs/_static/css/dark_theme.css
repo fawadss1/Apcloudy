@@ -1,0 +1,326 @@
+/* Dark Theme for APCloudy Documentation */
+
+/* Root variables for consistent dark theme colors */
+:root {
+    --bg-color: #1a1a1a;
+    --content-bg: #2d2d2d;
+    --sidebar-bg: #252525;
+    --text-color: #e0e0e0;
+    --text-muted: #b0b0b0;
+    --link-color: #66d9ff;
+    --link-hover: #4dc3ff;
+    --border-color: #404040;
+    --code-bg: #1e1e1e;
+    --code-border: #404040;
+    --header-bg: #1f2937;
+    --accent-color: #10b981;
+}
+
+/* Main body styling */
+body,
+.wy-body-for-nav {
+    background-color: var(--bg-color) !important;
+    color: var(--text-color) !important;
+}
+
+/* Navigation sidebar */
+.wy-nav-side {
+    background: var(--sidebar-bg) !important;
+    border-right: 1px solid var(--border-color) !important;
+}
+
+.wy-side-nav-search {
+    background-color: var(--header-bg) !important;
+    border-bottom: 1px solid var(--border-color) !important;
+}
+
+.wy-side-nav-search input[type=text] {
+    background-color: var(--code-bg) !important;
+    border: 1px solid var(--border-color) !important;
+    color: var(--text-color) !important;
+}
+
+.wy-side-nav-search input[type=text]:focus {
+    border-color: var(--accent-color) !important;
+}
+
+/* Navigation menu items */
+.wy-menu-vertical a {
+    color: var(--text-color) !important;
+}
+
+.wy-menu-vertical a:hover {
+    background-color: var(--border-color) !important;
+    color: var(--link-hover) !important;
+}
+
+.wy-menu-vertical li.current a {
+    background-color: var(--accent-color) !important;
+    color: #ffffff !important;
+    border-right: none !important;
+}
+
+.wy-menu-vertical li.current > a {
+    background-color: var(--accent-color) !important;
+}
+
+.wy-menu-vertical li.toctree-l2.current > a {
+    background-color: rgba(16, 185, 129, 0.8) !important;
+}
+
+.wy-menu-vertical li.toctree-l3.current > a {
+    background-color: rgba(16, 185, 129, 0.6) !important;
+}
+
+/* Main content area */
+.wy-nav-content-wrap {
+    background-color: var(--bg-color) !important;
+}
+
+.wy-nav-content {
+    background-color: var(--content-bg) !important;
+    color: var(--text-color) !important;
+}
+
+.rst-content {
+    color: var(--text-color) !important;
+}
+
+/* Headers */
+.rst-content h1,
+.rst-content h2,
+.rst-content h3,
+.rst-content h4,
+.rst-content h5,
+.rst-content h6 {
+    color: var(--text-color) !important;
+}
+
+.rst-content h1 {
+    border-bottom: 2px solid var(--accent-color) !important;
+    padding-bottom: 0.3em;
+}
+
+.rst-content h2 {
+    border-bottom: 1px solid var(--border-color) !important;
+    padding-bottom: 0.2em;
+}
+
+/* Links */
+.rst-content a {
+    color: var(--link-color) !important;
+}
+
+.rst-content a:hover {
+    color: var(--link-hover) !important;
+}
+
+.rst-content a:visited {
+    color: var(--link-color) !important;
+}
+
+/* Code blocks */
+.rst-content pre,
+.rst-content code {
+    background-color: var(--code-bg) !important;
+    border: 1px solid var(--code-border) !important;
+    color: var(--text-color) !important;
+}
+
+.rst-content .highlight {
+    background-color: var(--code-bg) !important;
+}
+
+.rst-content .highlight pre {
+    background-color: var(--code-bg) !important;
+    border: 1px solid var(--code-border) !important;
+}
+
+/* Inline code */
+.rst-content code.literal {
+    background-color: var(--code-bg) !important;
+    border: 1px solid var(--code-border) !important;
+    color: var(--accent-color) !important;
+    padding: 2px 4px !important;
+    border-radius: 3px !important;
+}
+
+/* Tables */
+.rst-content table.docutils {
+    border: 1px solid var(--border-color) !important;
+    background-color: var(--content-bg) !important;
+}
+
+.rst-content table.docutils thead {
+    background-color: var(--header-bg) !important;
+}
+
+.rst-content table.docutils th,
+.rst-content table.docutils td {
+    border: 1px solid var(--border-color) !important;
+    color: var(--text-color) !important;
+}
+
+.rst-content table.docutils th {
+    background-color: var(--header-bg) !important;
+    font-weight: bold !important;
+}
+
+/* Admonitions (notes, warnings, etc.) */
+.rst-content .admonition {
+    background-color: var(--content-bg) !important;
+    border: 1px solid var(--border-color) !important;
+    color: var(--text-color) !important;
+}
+
+.rst-content .admonition .admonition-title {
+    background-color: var(--header-bg) !important;
+    color: var(--text-color) !important;
+}
+
+.rst-content .note {
+    border-left: 4px solid #3498db !important;
+}
+
+.rst-content .warning {
+    border-left: 4px solid #f39c12 !important;
+}
+
+.rst-content .danger {
+    border-left: 4px solid #e74c3c !important;
+}
+
+.rst-content .tip {
+    border-left: 4px solid var(--accent-color) !important;
+}
+
+/* Search results */
+.rst-content .search-summary {
+    color: var(--text-muted) !important;
+}
+
+.rst-content .highlighted {
+    background-color: var(--accent-color) !important;
+    color: #ffffff !important;
+    padding: 2px 4px !important;
+    border-radius: 3px !important;
+}
+
+/* Footer */
+.rst-footer-buttons {
+    border-top: 1px solid var(--border-color) !important;
+}
+
+.btn {
+    background-color: var(--header-bg) !important;
+    border: 1px solid var(--border-color) !important;
+    color: var(--text-color) !important;
+}
+
+.btn:hover {
+    background-color: var(--accent-color) !important;
+    color: #ffffff !important;
+}
+
+/* Breadcrumbs */
+.wy-breadcrumbs {
+    background-color: var(--content-bg) !important;
+    border-bottom: 1px solid var(--border-color) !important;
+}
+
+.wy-breadcrumbs a {
+    color: var(--link-color) !important;
+}
+
+/* Version selector */
+.rst-versions {
+    background-color: var(--header-bg) !important;
+    border-top: 1px solid var(--border-color) !important;
+    color: var(--text-color) !important;
+}
+
+.rst-versions a {
+    color: var(--link-color) !important;
+}
+
+/* Scrollbars for webkit browsers */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg-color);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--text-muted);
+}
+
+/* Copy button styling */
+.copybtn {
+    background-color: var(--header-bg) !important;
+    border: 1px solid var(--border-color) !important;
+    color: var(--text-color) !important;
+}
+
+.copybtn:hover {
+    background-color: var(--accent-color) !important;
+    color: #ffffff !important;
+}
+
+/* API documentation specific styling */
+.rst-content dl dt {
+    background-color: var(--header-bg) !important;
+    border: 1px solid var(--border-color) !important;
+    color: var(--text-color) !important;
+}
+
+.rst-content dl dd {
+    background-color: var(--content-bg) !important;
+    border: 1px solid var(--border-color) !important;
+    border-top: none !important;
+}
+
+/* Method signatures */
+.rst-content .sig {
+    background-color: var(--code-bg) !important;
+    border: 1px solid var(--code-border) !important;
+}
+
+.rst-content .sig-name {
+    color: var(--accent-color) !important;
+}
+
+.rst-content .sig-param {
+    color: var(--text-color) !important;
+}
+
+/* Field lists (parameters, returns, etc.) */
+.rst-content .field-list th {
+    background-color: var(--header-bg) !important;
+    color: var(--text-color) !important;
+    border: 1px solid var(--border-color) !important;
+}
+
+.rst-content .field-list td {
+    background-color: var(--content-bg) !important;
+    color: var(--text-color) !important;
+    border: 1px solid var(--border-color) !important;
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 768px) {
+    .wy-nav-side {
+        background: var(--sidebar-bg) !important;
+    }
+
+    .wy-nav-content-wrap {
+        margin-left: 0 !important;
+    }
+}
