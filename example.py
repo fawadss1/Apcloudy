@@ -9,15 +9,6 @@ from apcloudy import APCloudyClient, config
 from apcloudy.models import JobState
 from apcloudy.utils import chunk_urls
 
-# Configuration - now uses config.py defaults
-PROJECT_API = "sk_1s_PQ8FhpxCumRV4g9ilfXaLdyE1WzjH5nTtR1mgNl4"
-PROJECT_ID = 10001
-
-
-# You can modify configuration at runtime if needed
-# config.default_units = 3  # Change default units
-# config.request_timeout = 60  # Increase timeout
-# config.default_poll_interval = 15  # Faster polling
 
 def get_sitemap_urls():
     sitemap_url = 'https://uk.rs-online.com/uk-sitemap.xml'
@@ -39,16 +30,14 @@ def get_sitemap_urls():
     return urls
 
 
-# Initialize APCloudy client - now automatically uses config.base_url
-client = APCloudyClient(PROJECT_API)
+client = APCloudyClient("sk_1s_PQ8FhpxCumRV4g9ilfXaLdyE1WzjH5nTtR1mgNl4")
 
-# Test connection
 # if client.verify():
 #     print("✅ Connected to APCloudy successfully!")
 # else:
 #     print("❌ Failed to connect to APCloudy")
 
-project = client.get_project(PROJECT_ID)
+project = client.get_project(10001)
 sp = client.create_project('kkkfdsf')
 # print(sp)
 
