@@ -8,6 +8,7 @@ validate configurations, and construct API URLs effectively.
 
 from typing import List, TypeVar, Iterator
 import math
+
 from .config import config
 
 T = TypeVar('T')

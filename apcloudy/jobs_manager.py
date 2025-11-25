@@ -8,6 +8,7 @@ canceling, and deleting jobs, as well as retrieving logs and scraped items.
 
 import time
 from typing import Dict, List, Optional, Any, Iterator, TYPE_CHECKING
+
 from .models import Job, JobState
 from .config import config
 from .exceptions import APIError, JobNotFoundError
@@ -32,8 +33,11 @@ class JobsManager:
         self.client = client
         self.project_id = project_id
 
-    def run(self, spider_name: str, units: Optional[int] = None, job_args: Optional[Dict[str, Any]] = None,
-            priority: Optional[int] = None, tags: Optional[List[str]] = None) -> List[Job]:
+    def run(self, spider_name: str,
+            units: Optional[int] = None,
+            job_args: Optional[Dict[str, Any]] = None,
+            priority: Optional[int] = None,
+            tags: Optional[List[str]] = None) -> List[Job]:
         """
         Run a spider job
 
@@ -41,7 +45,7 @@ class JobsManager:
             spider_name: Name of the spider to run
             units: Number of units (parallel instances) to run
             job_args: Arguments to pass to the spider
-            priority: Job priority (higher = more priority)
+            priority: Job priority (higher = higher priority)
             tags: Tags for job organization
 
         Returns:
@@ -80,7 +84,8 @@ class JobsManager:
                 raise JobNotFoundError(f"Job {job_id} not found")
             raise
 
-    def list(self, state: Optional[JobState] = None, spider: Optional[str] = None) -> list[Job]:
+    def list(self, state: Optional[JobState] = None,
+             spider: Optional[str] = None) -> list[Job]:
         """
         List jobs for the project
 

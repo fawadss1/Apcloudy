@@ -19,6 +19,7 @@ from dataclasses import dataclass, field
 from typing import Dict, List, Optional, Any
 from datetime import datetime
 from enum import Enum
+
 from tabulate import tabulate
 
 from .config import config
@@ -148,7 +149,6 @@ class Job:
         # Display job data in table format with columns
         headers = ["Job ID", "Spider Name", "State", "Project ID", "Created At", "Started At", "Finished At", "Items", "Requests", "Units", "Duration"]
 
-        print("JOB DETAILS")
         print(tabulate(row_data, headers=headers, tablefmt="grid"))
         return jobs
 

@@ -6,6 +6,7 @@ including retrieving project information and providing access to jobs and spider
 """
 
 from typing import TYPE_CHECKING
+
 from .models import Project
 from .exceptions import APIError, ProjectNotFoundError
 from .jobs_manager import JobsManager
