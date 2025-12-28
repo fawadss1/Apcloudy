@@ -12,7 +12,7 @@ class Config:
     """Configuration class for APCloudy client settings"""
 
     def __init__(self):
-        self.base_url = "http://10.10.10.184:8000/api/client"
+        self.base_url = "https://appcloudy.askpablos.com/api/client"
         self.api_key = None
         self.project_id = None
         self.current_job_id = None
