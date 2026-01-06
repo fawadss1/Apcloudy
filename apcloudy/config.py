@@ -11,8 +11,8 @@ options, pagination limits, file upload constraints, and logging preferences.
 class Config:
     """Configuration class for APCloudy client settings"""
 
-    def __init__(self):
-        self.base_url = "https://appcloudy.askpablos.com/api/client"
+    def __init__(self, settings=None):
+        self.base_url = self._build_base_url(settings)
         self.api_key = None
         self.project_id = None
         self.current_job_id = None
@@ -31,8 +31,27 @@ class Config:
         self.log_level = "INFO"
         self.log_format = "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
 
+    @staticmethod
+    def _build_base_url(settings):
+        """Build base URL from settings with /api/client suffix"""
+        if not settings:
+            return None
+
+        base_url = settings.get('APCLOUDY_URL')
+        return f"{base_url.rstrip('/')}/api/client" if base_url else None
+
+    def update_from_settings(self, settings):
+        """Update configuration from Scrapy settings"""
+        if settings:
+            new_base_url = self._build_base_url(settings)
+            if new_base_url:
+                self.base_url = new_base_url
+
     def validate(self) -> bool:
         """Validate configuration settings"""
+        if not self.base_url:
+            raise ValueError("APCLOUDY_URL is required. Please set it in your Scrapy settings.")
+
         if not self.api_key:
             raise ValueError("API key is required. Please pass it to the client.")
 

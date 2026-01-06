@@ -35,14 +35,18 @@ class APCloudyClient:
     :type session: Requests.Session
     """
 
-    def __init__(self, api_key: str = ''):
+    def __init__(self, api_key: str = '', settings=None):
         """
         Initialize APCloudy client
 
         Args:
             api_key: Your APCloudy API key
+            settings: Scrapy settings object (optional)
         """
-        # Set API key and validate configuration
+        # Update config with settings if provided
+        if settings:
+            config.update_from_settings(settings)
+
         if api_key:
             config.api_key = api_key
 
@@ -50,14 +54,17 @@ class APCloudyClient:
 
         self.api_key = config.api_key
         self.base_url = config.base_url.rstrip('/')
-        self.session = requests.Session()
-        self.session.headers.update({
+        self.session = self._create_session()
+
+    def _create_session(self) -> requests.Session:
+        """Create and configure HTTP session"""
+        session = requests.Session()
+        session.headers.update({
             'Authorization': f'Bearer {self.api_key}',
             'User-Agent': f'apcloudy-client/0.1.0'
         })
-
-        # Set request timeout from config
-        self.session.timeout = config.request_timeout
+        session.timeout = config.request_timeout
+        return session
 
     def http_request(self, method: str, endpoint: str, **kwargs) -> Dict[str, Any]:
         """
