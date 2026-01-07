@@ -37,7 +37,12 @@ class Config:
         if not settings:
             return None
 
-        base_url = settings.get('APCLOUDY_URL')
+        base_url = None
+        if hasattr(settings, 'get'):
+            base_url = settings.get('APCLOUDY_URL')
+        elif hasattr(settings, 'APCLOUDY_URL'):
+            base_url = getattr(settings, 'APCLOUDY_URL')
+
         return f"{base_url.rstrip('/')}/api/client" if base_url else None
 
     def update_from_settings(self, settings):
